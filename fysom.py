@@ -32,48 +32,48 @@ USAGE
 from fysom import Fysom
 
 fsm = Fysom({
-  'initial': 'green',
-  'events': [
-    {'name': 'warn',  'src': 'green',  'dst': 'yellow'},
-    {'name': 'panic', 'src': 'yellow', 'dst': 'red'},
-    {'name': 'calm',  'src': 'red',    'dst': 'yellow'},
-    {'name': 'clear', 'src': 'yellow', 'dst': 'green'}
-  ]
+    'initial': 'green',
+    'events': [
+        {'name': 'warn',    'src': 'green',    'dst': 'yellow'},
+        {'name': 'panic', 'src': 'yellow', 'dst': 'red'},
+        {'name': 'calm',    'src': 'red',        'dst': 'yellow'},
+        {'name': 'clear', 'src': 'yellow', 'dst': 'green'}
+    ]
 })
 
 ... will create an object with a method for each event:
 
-  - fsm.warn()  - transition from 'green'  to 'yellow'
-  - fsm.panic() - transition from 'yellow' to 'red'
-  - fsm.calm()  - transition from 'red'    to 'yellow'
-  - fsm.clear() - transition from 'yellow' to 'green'
+    - fsm.warn()    - transition from 'green'    to 'yellow'
+    - fsm.panic() - transition from 'yellow' to 'red'
+    - fsm.calm()    - transition from 'red'        to 'yellow'
+    - fsm.clear() - transition from 'yellow' to 'green'
 
 along with the following members:
 
-  - fsm.current    - contains the current state
-  - fsm.isstate(s) - return True if state s is the current state
-  - fsm.can(e)     - return True if event e can be fired in the current
-                     state
-  - fsm.cannot(e)  - return True if event s cannot be fired in the
-                     current state
+    - fsm.current        - contains the current state
+    - fsm.isstate(s) - return True if state s is the current state
+    - fsm.can(e)         - return True if event e can be fired in the current
+                                         state
+    - fsm.cannot(e)    - return True if event s cannot be fired in the
+                                         current state
 
 MULTIPLE SRC AND TO STATES FOR A SINGLE EVENT
 
 fsm = Fysom({
-  'initial': 'hungry',
-  'events': [
-    {'name': 'eat',  'src': 'hungry',    'dst': 'satisfied'},
-    {'name': 'eat',  'src': 'satisfied', 'dst': 'full'},
-    {'name': 'eat',  'src': 'full',      'dst': 'sick'},
-    {'name': 'rest', 'src': ['hungry', 'satisfied', 'full', 'sick'],
-                                         'dst': 'hungry'}
-  ]
+    'initial': 'hungry',
+    'events': [
+        {'name': 'eat',    'src': 'hungry',        'dst': 'satisfied'},
+        {'name': 'eat',    'src': 'satisfied', 'dst': 'full'},
+        {'name': 'eat',    'src': 'full',            'dst': 'sick'},
+        {'name': 'rest', 'src': ['hungry', 'satisfied', 'full', 'sick'],
+                                                                                 'dst': 'hungry'}
+    ]
 })
 
 This example will create an object with 2 event methods:
 
-  - fsm.eat()
-  - fsm.rest()
+    - fsm.eat()
+    - fsm.rest()
 
 The rest event will always transition to the hungry state, while the eat
 event will transition to a state that is dependent on the current state.
@@ -129,21 +129,21 @@ def onyellow(e): print 'yellow'
 def onred(e): print 'red'
 
 fsm = Fysom({
-  'initial': 'green',
-  'events': [
-    {'name': 'warn',  'src': 'green',  'dst': 'yellow'},
-    {'name': 'panic', 'src': 'yellow', 'dst': 'red'},
-    {'name': 'panic', 'src': 'green',  'dst': 'red'},
-    {'name': 'calm',  'src': 'red',    'dst': 'yellow'},
-    {'name': 'clear', 'src': 'yellow', 'dst': 'green'}
-  ],
-  'callbacks': {
-    'onpanic':  onpanic,
-    'oncalm':   oncalm,
-    'ongreen':  ongreen,
-    'onyellow': onyellow,
-    'onred':    onred
-  }
+    'initial': 'green',
+    'events': [
+        {'name': 'warn',    'src': 'green',    'dst': 'yellow'},
+        {'name': 'panic', 'src': 'yellow', 'dst': 'red'},
+        {'name': 'panic', 'src': 'green',    'dst': 'red'},
+        {'name': 'calm',    'src': 'red',        'dst': 'yellow'},
+        {'name': 'clear', 'src': 'yellow', 'dst': 'green'}
+    ],
+    'callbacks': {
+        'onpanic':    onpanic,
+        'oncalm':     oncalm,
+        'ongreen':    ongreen,
+        'onyellow': onyellow,
+        'onred':        onred
+    }
 })
 
 fsm.panic(msg='killer bees')
@@ -153,7 +153,7 @@ Additionally, they can be added and removed from the state machine at
 any time:
 
 def printstatechange(e):
-  print 'event: %s, src: %s, dst: %s' % (e.event, e.src, e.dst)
+    print 'event: %s, src: %s, dst: %s' % (e.event, e.src, e.dst)
 
 del fsm.ongreen
 del fsm.onyellow
@@ -186,11 +186,11 @@ will be in the 'none' state and you would need to provide an event to
 take it out of this state:
 
 fsm = Fysom({
-  'events': [
-    {'name': 'startup', 'src': 'none',  'dst': 'green'},
-    {'name': 'panic',   'src': 'green', 'dst': 'red'},
-    {'name': 'calm',    'src': 'red',   'dst': 'green'},
-  ]
+    'events': [
+        {'name': 'startup', 'src': 'none',    'dst': 'green'},
+        {'name': 'panic',     'src': 'green', 'dst': 'red'},
+        {'name': 'calm',        'src': 'red',     'dst': 'green'},
+    ]
 })
 print fsm.current # "none"
 fsm.startup()
@@ -201,11 +201,11 @@ examples), then an implicit 'startup' event will be created for you and
 fired when the state machine is constructed:
 
 fsm = Fysom({
-  'initial': 'green',
-  'events': [
-    {'name': 'panic', 'src': 'green', 'dst': 'red'},
-    {'name': 'calm',  'src': 'red',   'dst': 'green'},
-  ]
+    'initial': 'green',
+    'events': [
+        {'name': 'panic', 'src': 'green', 'dst': 'red'},
+        {'name': 'calm',    'src': 'red',     'dst': 'green'},
+    ]
 })
 print fsm.current # "green"
 
@@ -213,11 +213,11 @@ If your object already has a startup method, you can use a different
 name for the initial event:
 
 fsm = Fysom({
-  'initial': {'state': 'green', 'event': 'init'},
-  'events': [
-    {'name': 'panic', 'src': 'green', 'dst': 'red'},
-    {'name': 'calm',  'src': 'red',   'dst': 'green'},
-  ]
+    'initial': {'state': 'green', 'event': 'init'},
+    'events': [
+        {'name': 'panic', 'src': 'green', 'dst': 'red'},
+        {'name': 'calm',    'src': 'red',     'dst': 'green'},
+    ]
 })
 print fsm.current # "green"
 
@@ -225,11 +225,11 @@ Finally, if you want to wait to call the initiall state transition
 event until a later date, you can defer it:
 
 fsm = Fysom({
-  'initial': {'state': 'green', 'event': 'init', 'defer': True},
-  'events': [
-    {'name': 'panic', 'src': 'green', 'dst': 'red'},
-    {'name': 'calm',  'src': 'red',   'dst': 'green'},
-  ]
+    'initial': {'state': 'green', 'event': 'init', 'defer': True},
+    'events': [
+        {'name': 'panic', 'src': 'green', 'dst': 'red'},
+        {'name': 'calm',    'src': 'red',     'dst': 'green'},
+    ]
 })
 print fsm.current # "none"
 fsm.init()
@@ -255,126 +255,126 @@ __email__ = 'mansour@oxplot.com'
 import types
 
 try:
-  unicode = unicode
+    unicode = unicode
 except NameError:
-  unicode = str
-  basestring = (str, bytes)
+    unicode = str
+    basestring = (str, bytes)
 
 class FysomError(Exception):
-  pass
+    pass
 
 class Fysom(object):
 
-  def __init__(self, cfg):
-    self._apply(cfg)
+    def __init__(self, cfg):
+        self._apply(cfg)
 
-  def isstate(self, state):
-    return self.current == state
+    def isstate(self, state):
+        return self.current == state
 
-  def can(self, event):
-    return event in self._map and self.current in self._map[event] \
-      and not hasattr(self, 'transition')
+    def can(self, event):
+        return event in self._map and self.current in self._map[event] \
+            and not hasattr(self, 'transition')
 
-  def cannot(self, event):
-    return not self.can(event)
+    def cannot(self, event):
+        return not self.can(event)
 
-  def _apply(self, cfg):
-    init = cfg['initial'] if 'initial' in cfg else None
-    if isinstance(init, basestring):
-      init = {'state': init}
-    events = cfg['events'] if 'events' in cfg else []
-    callbacks = cfg['callbacks'] if 'callbacks' in cfg else {}
-    tmap = {}
-    self._map = tmap
+    def _apply(self, cfg):
+        init = cfg['initial'] if 'initial' in cfg else None
+        if isinstance(init, basestring):
+            init = {'state': init}
+        events = cfg['events'] if 'events' in cfg else []
+        callbacks = cfg['callbacks'] if 'callbacks' in cfg else {}
+        tmap = {}
+        self._map = tmap
 
-    def add(e):
-      src = [e['src']] if isinstance(e['src'], basestring) else e['src']
-      if e['name'] not in tmap:
-        tmap[e['name']] = {}
-      for s in src:
-        tmap[e['name']][s] = e['dst']
+        def add(e):
+            src = [e['src']] if isinstance(e['src'], basestring) else e['src']
+            if e['name'] not in tmap:
+                tmap[e['name']] = {}
+            for s in src:
+                tmap[e['name']][s] = e['dst']
 
-    if init:
-      if 'event' not in init:
-        init['event'] = 'startup'
-      add({'name': init['event'], 'src': 'none', 'dst': init['state']})
+        if init:
+            if 'event' not in init:
+                init['event'] = 'startup'
+            add({'name': init['event'], 'src': 'none', 'dst': init['state']})
 
-    for e in events:
-      add(e)
+        for e in events:
+            add(e)
 
-    for name in tmap:
-      setattr(self, name, self._build_event(name))
+        for name in tmap:
+            setattr(self, name, self._build_event(name))
 
-    for name in callbacks:
-      setattr(self, name, callbacks[name])
+        for name in callbacks:
+            setattr(self, name, callbacks[name])
 
-    self.current = 'none'
+        self.current = 'none'
 
-    if init and 'defer' not in init:
-      getattr(self, init['event'])()
+        if init and 'defer' not in init:
+            getattr(self, init['event'])()
 
-  def _build_event(self, event):
+    def _build_event(self, event):
 
-    def fn(**kwargs):
+        def fn(**kwargs):
 
-      if hasattr(self, 'transition'):
-        raise FysomError("event %s inappropriate because previous"
-                         " transition did not complete" % event)
-      if not self.can(event):
-        raise FysomError("event %s inappropriate in current state"
-                         " %s" % (event, self.current))
+            if hasattr(self, 'transition'):
+                raise FysomError("event %s inappropriate because previous"
+                                                 " transition did not complete" % event)
+            if not self.can(event):
+                raise FysomError("event %s inappropriate in current state"
+                                                 " %s" % (event, self.current))
 
-      src = self.current
-      dst = self._map[event][src]
+            src = self.current
+            dst = self._map[event][src]
 
-      class _e_obj(object):
-        pass
-      e = _e_obj()
-      e.fsm, e.event, e.src, e.dst = self, event, src, dst
-      for k in kwargs:
-        setattr(e, k, kwargs[k])
+            class _e_obj(object):
+                pass
+            e = _e_obj()
+            e.fsm, e.event, e.src, e.dst = self, event, src, dst
+            for k in kwargs:
+                setattr(e, k, kwargs[k])
 
-      if self.current != dst:
-        if self._before_event(e) == False:
-          return
-        def _tran():
-          delattr(self, 'transition')
-          self.current = dst
-          self._enter_state(e)
-          self._change_state(e)
-          self._after_event(e)
-        self.transition = _tran
+            if self.current != dst:
+                if self._before_event(e) == False:
+                    return
+                def _tran():
+                    delattr(self, 'transition')
+                    self.current = dst
+                    self._enter_state(e)
+                    self._change_state(e)
+                    self._after_event(e)
+                self.transition = _tran
 
-      if self._leave_state(e) != False:
-        if hasattr(self, 'transition'):
-          self.transition()
-      
-    return fn
+            if self._leave_state(e) != False:
+                if hasattr(self, 'transition'):
+                    self.transition()
+            
+        return fn
 
-  def _before_event(self, e):
-    fnname = 'onbefore' + e.event
-    if hasattr(self, fnname):
-      return getattr(self, fnname)(e)
+    def _before_event(self, e):
+        fnname = 'onbefore' + e.event
+        if hasattr(self, fnname):
+            return getattr(self, fnname)(e)
 
-  def _after_event(self, e):
-    for fnname in ['onafter' + e.event, 'on' + e.event]:
-      if hasattr(self, fnname):
-        return getattr(self, fnname)(e)
+    def _after_event(self, e):
+        for fnname in ['onafter' + e.event, 'on' + e.event]:
+            if hasattr(self, fnname):
+                return getattr(self, fnname)(e)
 
-  def _leave_state(self, e):
-    fnname = 'onleave' + e.src
-    if hasattr(self, fnname):
-      return getattr(self, fnname)(e)
+    def _leave_state(self, e):
+        fnname = 'onleave' + e.src
+        if hasattr(self, fnname):
+            return getattr(self, fnname)(e)
 
-  def _enter_state(self, e):
-    for fnname in ['onenter' + e.dst, 'on' + e.dst]:
-      if hasattr(self, fnname):
-        return getattr(self, fnname)(e)
+    def _enter_state(self, e):
+        for fnname in ['onenter' + e.dst, 'on' + e.dst]:
+            if hasattr(self, fnname):
+                return getattr(self, fnname)(e)
 
-  def _change_state(self, e):
-    fnname = 'onchangestate'
-    if hasattr(self, fnname):
-      return getattr(self, fnname)(e)
+    def _change_state(self, e):
+        fnname = 'onchangestate'
+        if hasattr(self, fnname):
+            return getattr(self, fnname)(e)
 
 if __name__ == '__main__':
-  pass
+    pass
