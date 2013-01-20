@@ -1,6 +1,6 @@
 import unittest
 
-from fysom import Fysom, FysomError
+from fysom import Fysom, FysomError, MultiplePossibilitesFound, NoPossibilityFound
 
 
 class StatesTestCase(unittest.TestCase):
@@ -44,3 +44,29 @@ class StatesTestCase(unittest.TestCase):
 
         self.assertEqual('yellow', self.fsm.next())
         self.assertEqual('yellow', self.fsm.current)
+
+    def test_multiple_possibilities_for_next(self):
+        fsm = Fysom({
+            'initial': 'green',
+            'events': [
+                {'name': 'warn', 'src': 'green', 'dst': 'yellow'},
+                {'name': 'panic', 'src': 'yellow', 'dst': 'red'},
+                {'name': 'panic', 'src': 'green', 'dst': 'red'},
+                {'name': 'calm', 'src': 'red', 'dst': 'yellow'},
+                {'name': 'clear', 'src': 'yellow', 'dst': 'green'}
+            ]
+        })
+
+        self.assertRaises(MultiplePossibilitesFound, fsm.next)
+
+    def test_no_possibility_for_next(self):
+        fsm = Fysom({
+            'initial': 'green',
+            'events': [
+                {'name': 'panic', 'src': 'yellow', 'dst': 'red'},
+                {'name': 'calm', 'src': 'red', 'dst': 'yellow'},
+                {'name': 'clear', 'src': 'yellow', 'dst': 'green'}
+            ]
+        })
+
+        self.assertRaises(NoPossibilityFound, fsm.next)

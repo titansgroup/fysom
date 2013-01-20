@@ -262,6 +262,14 @@ class FysomError(Exception):
     pass
 
 
+class MultiplePossibilitesFound(FysomError):
+    pass
+
+
+class NoPossibilityFound(FysomError):
+    pass
+
+
 class Fysom(object):
 
     def __init__(self, cfg):
@@ -289,6 +297,20 @@ class Fysom(object):
 
     def cannot(self, event):
         return not self.can(event)
+
+    def next(self):
+        possibilities = []
+        for (method, cfg) in self._map.iteritems():
+            if cfg.get(self.current):
+                possibilities.append(method)
+
+        if not possibilities:
+            raise NoPossibilityFound('No possibility of next state found.')
+
+        if len(possibilities) > 1:
+            raise MultiplePossibilitesFound('Multiple possibilites of next state found.')
+
+        return getattr(self, possibilities[0])()
 
     def _apply(self, cfg):
         init = cfg['initial'] if 'initial' in cfg else None
@@ -361,6 +383,8 @@ class Fysom(object):
             if self._leave_state(e) is not False:
                 if hasattr(self, 'transition'):
                     self.transition()
+
+            return self.current
 
         return fn
 
