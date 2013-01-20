@@ -18,8 +18,15 @@ class PicklingTestCase(unittest.TestCase):
         })
 
         pickled = dumps(fsm)
-        self.assertEqual('', pickled)
-
+        assert pickled
         fsm = loads(pickled)
 
         self.assertTrue(isinstance(fsm, Fysom))
+        self.assertEquals('green', fsm.current)
+
+        fsm.warn()
+        pickled = dumps(fsm)
+        assert pickled
+        fsm = loads(pickled)
+
+        self.assertEquals('yellow', fsm.current)

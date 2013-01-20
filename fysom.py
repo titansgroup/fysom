@@ -267,6 +267,16 @@ class Fysom(object):
     def __init__(self, cfg):
         self._apply(cfg)
 
+    def __getstate__(self):
+        return {'map': self._map, 'current': self.current}
+
+    def __setstate__(self, state):
+        self._map = state.get('map')
+        self.current = state.get('current')
+
+        for e in self._map:
+            setattr(self, e, self._build_event(e))
+
     def isstate(self, state):
         return self.current == state
 
