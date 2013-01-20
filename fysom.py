@@ -13,10 +13,10 @@
 # distribute, sublicense, and/or sell copies of the Software, and to
 # permit persons to whom the Software is furnished to do so, subject to
 # the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be
 # included in all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 # EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -34,39 +34,36 @@ from fysom import Fysom
 fsm = Fysom({
     'initial': 'green',
     'events': [
-        {'name': 'warn',    'src': 'green',    'dst': 'yellow'},
+        {'name': 'warn', 'src': 'green', 'dst': 'yellow'},
         {'name': 'panic', 'src': 'yellow', 'dst': 'red'},
-        {'name': 'calm',    'src': 'red',        'dst': 'yellow'},
+        {'name': 'calm', 'src': 'red', 'dst': 'yellow'},
         {'name': 'clear', 'src': 'yellow', 'dst': 'green'}
     ]
 })
 
 ... will create an object with a method for each event:
 
-    - fsm.warn()    - transition from 'green'    to 'yellow'
+    - fsm.warn()  - transition from 'green'  to 'yellow'
     - fsm.panic() - transition from 'yellow' to 'red'
-    - fsm.calm()    - transition from 'red'        to 'yellow'
+    - fsm.calm()  - transition from 'red'    to 'yellow'
     - fsm.clear() - transition from 'yellow' to 'green'
 
 along with the following members:
 
-    - fsm.current        - contains the current state
+    - fsm.current    - contains the current state
     - fsm.isstate(s) - return True if state s is the current state
-    - fsm.can(e)         - return True if event e can be fired in the current
-                                         state
-    - fsm.cannot(e)    - return True if event s cannot be fired in the
-                                         current state
+    - fsm.can(e)     - return True if event e can be fired in the current state
+    - fsm.cannot(e)  - return True if event s cannot be fired in the current state
 
 MULTIPLE SRC AND TO STATES FOR A SINGLE EVENT
 
 fsm = Fysom({
     'initial': 'hungry',
     'events': [
-        {'name': 'eat',    'src': 'hungry',        'dst': 'satisfied'},
-        {'name': 'eat',    'src': 'satisfied', 'dst': 'full'},
-        {'name': 'eat',    'src': 'full',            'dst': 'sick'},
-        {'name': 'rest', 'src': ['hungry', 'satisfied', 'full', 'sick'],
-                                                                                 'dst': 'hungry'}
+        {'name': 'eat', 'src': 'hungry', 'dst': 'satisfied'},
+        {'name': 'eat', 'src': 'satisfied', 'dst': 'full'},
+        {'name': 'eat', 'src': 'full', 'dst': 'sick'},
+        {'name': 'rest', 'src': ['hungry', 'satisfied', 'full', 'sick'], 'dst': 'hungry'}
     ]
 })
 
@@ -131,18 +128,18 @@ def onred(e): print 'red'
 fsm = Fysom({
     'initial': 'green',
     'events': [
-        {'name': 'warn',    'src': 'green',    'dst': 'yellow'},
+        {'name': 'warn', 'src': 'green', 'dst': 'yellow'},
         {'name': 'panic', 'src': 'yellow', 'dst': 'red'},
-        {'name': 'panic', 'src': 'green',    'dst': 'red'},
-        {'name': 'calm',    'src': 'red',        'dst': 'yellow'},
+        {'name': 'panic', 'src': 'green', 'dst': 'red'},
+        {'name': 'calm', 'src': 'red', 'dst': 'yellow'},
         {'name': 'clear', 'src': 'yellow', 'dst': 'green'}
     ],
     'callbacks': {
-        'onpanic':    onpanic,
-        'oncalm':     oncalm,
-        'ongreen':    ongreen,
+        'onpanic': onpanic,
+        'oncalm':  oncalm,
+        'ongreen': ongreen,
         'onyellow': onyellow,
-        'onred':        onred
+        'onred': onred
     }
 })
 
@@ -187,9 +184,9 @@ take it out of this state:
 
 fsm = Fysom({
     'events': [
-        {'name': 'startup', 'src': 'none',    'dst': 'green'},
-        {'name': 'panic',     'src': 'green', 'dst': 'red'},
-        {'name': 'calm',        'src': 'red',     'dst': 'green'},
+        {'name': 'startup', 'src': 'none', 'dst': 'green'},
+        {'name': 'panic', 'src': 'green', 'dst': 'red'},
+        {'name': 'calm', 'src': 'red', 'dst': 'green'},
     ]
 })
 print fsm.current # "none"
@@ -204,7 +201,7 @@ fsm = Fysom({
     'initial': 'green',
     'events': [
         {'name': 'panic', 'src': 'green', 'dst': 'red'},
-        {'name': 'calm',    'src': 'red',     'dst': 'green'},
+        {'name': 'calm', 'src': 'red', 'dst': 'green'},
     ]
 })
 print fsm.current # "green"
@@ -216,7 +213,7 @@ fsm = Fysom({
     'initial': {'state': 'green', 'event': 'init'},
     'events': [
         {'name': 'panic', 'src': 'green', 'dst': 'red'},
-        {'name': 'calm',    'src': 'red',     'dst': 'green'},
+        {'name': 'calm', 'src': 'red', 'dst': 'green'},
     ]
 })
 print fsm.current # "green"
@@ -228,7 +225,7 @@ fsm = Fysom({
     'initial': {'state': 'green', 'event': 'init', 'defer': True},
     'events': [
         {'name': 'panic', 'src': 'green', 'dst': 'red'},
-        {'name': 'calm',    'src': 'red',     'dst': 'green'},
+        {'name': 'calm', 'src': 'red', 'dst': 'green'},
     ]
 })
 print fsm.current # "none"
@@ -348,7 +345,7 @@ class Fysom(object):
             if self._leave_state(e) != False:
                 if hasattr(self, 'transition'):
                     self.transition()
-            
+
         return fn
 
     def _before_event(self, e):
