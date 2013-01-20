@@ -26,6 +26,7 @@ class StatesTestCase(unittest.TestCase):
         self.assertTrue(self.fsm.isstate('green'))
         self.assertTrue(self.fsm.can('warn'))
         self.assertFalse(self.fsm.can('panic'))
+        self.assertTrue(self.fsm.cannot('panic'))
         self.assertFalse(self.fsm.can('clam'))
         self.assertFalse(self.fsm.can('clear'))
 
