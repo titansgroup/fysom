@@ -257,8 +257,10 @@ except NameError:
     unicode = str
     basestring = (str, bytes)
 
+
 class FysomError(Exception):
     pass
+
 
 class Fysom(object):
 
@@ -316,10 +318,10 @@ class Fysom(object):
 
             if hasattr(self, 'transition'):
                 raise FysomError("event %s inappropriate because previous"
-                                                 " transition did not complete" % event)
+                                 " transition did not complete" % event)
             if not self.can(event):
                 raise FysomError("event %s inappropriate in current state"
-                                                 " %s" % (event, self.current))
+                                 " %s" % (event, self.current))
 
             src = self.current
             dst = self._map[event][src]
@@ -332,8 +334,9 @@ class Fysom(object):
                 setattr(e, k, kwargs[k])
 
             if self.current != dst:
-                if self._before_event(e) == False:
+                if self._before_event(e) is False:
                     return
+
                 def _tran():
                     delattr(self, 'transition')
                     self.current = dst
@@ -342,7 +345,7 @@ class Fysom(object):
                     self._after_event(e)
                 self.transition = _tran
 
-            if self._leave_state(e) != False:
+            if self._leave_state(e) is not False:
                 if hasattr(self, 'transition'):
                     self.transition()
 
