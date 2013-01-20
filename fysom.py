@@ -268,6 +268,9 @@ class Fysom(object):
         self._apply(cfg)
 
     def __getstate__(self):
+        for attrib in self.__dict__:
+            if callable(self.__dict__[attrib]) and attrib.startswith('on'):
+                raise RuntimeError("Pickling won't work if there is any callback.")
         return {'map': self._map, 'current': self.current}
 
     def __setstate__(self, state):
