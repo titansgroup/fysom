@@ -298,7 +298,7 @@ class Fysom(object):
     def cannot(self, event):
         return not self.can(event)
 
-    def next(self):
+    def _get_possibilities(self):
         possibilities = []
         for (method, cfg) in self._map.iteritems():
             if cfg.get(self.current):
@@ -307,10 +307,22 @@ class Fysom(object):
         if not possibilities:
             raise NoPossibilityFound('No possibility of next state found.')
 
+        return possibilities
+
+    def next(self):
+        possibilities = self._get_possibilities()
+
         if len(possibilities) > 1:
             raise MultiplePossibilitesFound('Multiple possibilites of next state found.')
 
         return getattr(self, possibilities[0])()
+
+    def goto(self, step_name):
+        possibilities = self._get_possibilities()
+        if step_name not in possibilities:
+            raise NoPossibilityFound('No possibility of state found')
+
+        return getattr(self, step_name)()
 
     def _apply(self, cfg):
         init = cfg['initial'] if 'initial' in cfg else None
