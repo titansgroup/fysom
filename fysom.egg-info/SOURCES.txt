@@ -1,0 +1,7 @@
+fysom.py
+setup.cfg
+setup.py
+fysom.egg-info/PKG-INFO
+fysom.egg-info/SOURCES.txt
+fysom.egg-info/dependency_links.txt
+fysom.egg-info/top_level.txt
