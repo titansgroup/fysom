@@ -4,7 +4,10 @@ Titans Group implementation of finite state machines.
 
 Installing
 ----------
+
+```shell
 pip install tg-fysom
+```
 
 
 > :warning: **Warning**:  
