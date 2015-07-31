@@ -2,3 +2,7 @@
 *.pyo
 *~
 *fysom.egg*
+*.egg-info
+.eggs/
+.tox/
+junit*.xml
