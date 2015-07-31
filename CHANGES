@@ -1,0 +1,11 @@
+1.1.0
+=====
+    
+    - Add CHANGES file to automatic generate versions of the library
+    - Add Tox as the default test executing method
+    - Change nose runner to pytest
+
+1.0.0
+=====
+    
+    - Initial release. Refactor most of the original library code.
